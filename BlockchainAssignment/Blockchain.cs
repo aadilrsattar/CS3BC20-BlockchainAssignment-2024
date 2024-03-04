@@ -144,7 +144,15 @@ namespace BlockchainAssignment
             return String.Join("\n", blocks);
         }
 
-
+        public void SortTransactionsByAddressPreference(string targetAddress)
+        {
+            if (CurrentMiningPreference == MiningPreference.AddressPreference)
+            {
+                transactionPool = transactionPool.OrderBy(t => t.recipientAddress != targetAddress)
+                                                 .ThenBy(t => t.recipientAddress)
+                                                 .ToList();
+            }
+        }
 
     }
 }

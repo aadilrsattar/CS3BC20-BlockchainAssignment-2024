@@ -60,6 +60,11 @@ namespace BlockchainAssignment
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,7 +75,7 @@ namespace BlockchainAssignment
             this.output.Location = new System.Drawing.Point(16, 14);
             this.output.Margin = new System.Windows.Forms.Padding(4);
             this.output.Name = "output";
-            this.output.Size = new System.Drawing.Size(612, 300);
+            this.output.Size = new System.Drawing.Size(612, 329);
             this.output.TabIndex = 0;
             this.output.Text = "";
             // 
@@ -95,7 +100,7 @@ namespace BlockchainAssignment
             // 
             // generateWallet
             // 
-            this.generateWallet.Location = new System.Drawing.Point(34, 341);
+            this.generateWallet.Location = new System.Drawing.Point(20, 369);
             this.generateWallet.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.generateWallet.Name = "generateWallet";
             this.generateWallet.Size = new System.Drawing.Size(106, 67);
@@ -107,40 +112,44 @@ namespace BlockchainAssignment
             // publicKeyLabel
             // 
             this.publicKeyLabel.AutoSize = true;
-            this.publicKeyLabel.Location = new System.Drawing.Point(150, 356);
+            this.publicKeyLabel.Location = new System.Drawing.Point(156, 385);
             this.publicKeyLabel.Name = "publicKeyLabel";
             this.publicKeyLabel.Size = new System.Drawing.Size(70, 16);
             this.publicKeyLabel.TabIndex = 4;
             this.publicKeyLabel.Text = "Public Key";
+            this.publicKeyLabel.Click += new System.EventHandler(this.publicKeyLabel_Click);
             // 
             // privateKeyLabel
             // 
             this.privateKeyLabel.AutoSize = true;
-            this.privateKeyLabel.Location = new System.Drawing.Point(145, 382);
+            this.privateKeyLabel.Location = new System.Drawing.Point(151, 413);
             this.privateKeyLabel.Name = "privateKeyLabel";
             this.privateKeyLabel.Size = new System.Drawing.Size(75, 16);
             this.privateKeyLabel.TabIndex = 5;
             this.privateKeyLabel.Text = "Private Key";
+            this.privateKeyLabel.Click += new System.EventHandler(this.privateKeyLabel_Click);
             // 
             // publicKey
             // 
-            this.publicKey.Location = new System.Drawing.Point(225, 351);
+            this.publicKey.Location = new System.Drawing.Point(232, 382);
             this.publicKey.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.publicKey.Name = "publicKey";
             this.publicKey.Size = new System.Drawing.Size(251, 22);
             this.publicKey.TabIndex = 6;
+            this.publicKey.TextChanged += new System.EventHandler(this.publicKey_TextChanged);
             // 
             // privateKey
             // 
-            this.privateKey.Location = new System.Drawing.Point(228, 377);
+            this.privateKey.Location = new System.Drawing.Point(232, 410);
             this.privateKey.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.privateKey.Name = "privateKey";
-            this.privateKey.Size = new System.Drawing.Size(248, 22);
+            this.privateKey.Size = new System.Drawing.Size(251, 22);
             this.privateKey.TabIndex = 7;
+            this.privateKey.TextChanged += new System.EventHandler(this.privateKey_TextChanged);
             // 
             // validateKeys
             // 
-            this.validateKeys.Location = new System.Drawing.Point(489, 349);
+            this.validateKeys.Location = new System.Drawing.Point(489, 377);
             this.validateKeys.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.validateKeys.Name = "validateKeys";
             this.validateKeys.Size = new System.Drawing.Size(116, 27);
@@ -151,7 +160,7 @@ namespace BlockchainAssignment
             // 
             // createTransaction
             // 
-            this.createTransaction.Location = new System.Drawing.Point(635, 235);
+            this.createTransaction.Location = new System.Drawing.Point(639, 236);
             this.createTransaction.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.createTransaction.Name = "createTransaction";
             this.createTransaction.Size = new System.Drawing.Size(260, 32);
@@ -235,7 +244,7 @@ namespace BlockchainAssignment
             // 
             // readPendingTransactions
             // 
-            this.readPendingTransactions.Location = new System.Drawing.Point(634, 276);
+            this.readPendingTransactions.Location = new System.Drawing.Point(639, 307);
             this.readPendingTransactions.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readPendingTransactions.Name = "readPendingTransactions";
             this.readPendingTransactions.Size = new System.Drawing.Size(261, 31);
@@ -246,7 +255,7 @@ namespace BlockchainAssignment
             // 
             // validate
             // 
-            this.validate.Location = new System.Drawing.Point(634, 351);
+            this.validate.Location = new System.Drawing.Point(637, 379);
             this.validate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.validate.Name = "validate";
             this.validate.Size = new System.Drawing.Size(261, 57);
@@ -257,7 +266,7 @@ namespace BlockchainAssignment
             // 
             // checkBalance
             // 
-            this.checkBalance.Location = new System.Drawing.Point(489, 378);
+            this.checkBalance.Location = new System.Drawing.Point(489, 406);
             this.checkBalance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBalance.Name = "checkBalance";
             this.checkBalance.Size = new System.Drawing.Size(116, 30);
@@ -269,11 +278,12 @@ namespace BlockchainAssignment
             // currentWalletLabel
             // 
             this.currentWalletLabel.AutoSize = true;
-            this.currentWalletLabel.Location = new System.Drawing.Point(36, 318);
+            this.currentWalletLabel.Location = new System.Drawing.Point(136, 360);
             this.currentWalletLabel.Name = "currentWalletLabel";
             this.currentWalletLabel.Size = new System.Drawing.Size(90, 16);
             this.currentWalletLabel.TabIndex = 22;
             this.currentWalletLabel.Text = "Current Wallet";
+            this.currentWalletLabel.Click += new System.EventHandler(this.currentWalletLabel_Click);
             // 
             // transactionLabel
             // 
@@ -296,11 +306,12 @@ namespace BlockchainAssignment
             // validationLabel
             // 
             this.validationLabel.AutoSize = true;
-            this.validationLabel.Location = new System.Drawing.Point(633, 318);
+            this.validationLabel.Location = new System.Drawing.Point(638, 353);
             this.validationLabel.Name = "validationLabel";
             this.validationLabel.Size = new System.Drawing.Size(67, 16);
             this.validationLabel.TabIndex = 25;
             this.validationLabel.Text = "Validation";
+            this.validationLabel.Click += new System.EventHandler(this.validationLabel_Click);
             // 
             // radioButton1
             // 
@@ -362,12 +373,64 @@ namespace BlockchainAssignment
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(489, 350);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(58, 22);
+            this.textBox1.TabIndex = 31;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(346, 350);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(58, 22);
+            this.textBox2.TabIndex = 32;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(425, 353);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(58, 16);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "Threads";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(284, 353);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 16);
+            this.label2.TabIndex = 34;
+            this.label2.Text = "Difficulty";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(639, 272);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(261, 31);
+            this.button1.TabIndex = 35;
+            this.button1.Text = "Generate Random Transactions";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_ClickAsync);
+            // 
             // BlockchainApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(908, 429);
+            this.ClientSize = new System.Drawing.Size(908, 453);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.validationLabel);
             this.Controls.Add(this.blocksLabel);
             this.Controls.Add(this.transactionLabel);
@@ -437,6 +500,11 @@ namespace BlockchainAssignment
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button1;
     }
 }
 

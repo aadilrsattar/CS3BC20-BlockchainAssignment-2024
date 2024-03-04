@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static BlockchainAssignment.Block;
 
@@ -98,12 +99,21 @@ namespace BlockchainAssignment
             // Retrieve pending transactions to be added to the newly generated Block
             List<Transaction> transactions = blockchain.GetPendingTransactions();
 
-            // Create and append the new block - requires a reference to the previous block, a set of transactions and the miners public address (For the reward to be issued)
+            // Create and append the new block - requires a reference to the previous block, a set of transactions, and the miner's public address (For the reward to be issued)
             Block newBlock = new Block(blockchain.GetLastBlock(), transactions, publicKey.Text);
             blockchain.blocks.Add(newBlock);
 
-            UpdateText(blockchain.ToString());
+            // Retrieve the elapsed time, difficulty, and number of threads of the mining process
+            TimeSpan elapsedTime = Block.StaticElapsedTime;
+            int difficulty = newBlock.Difficulty;
+            int threads = newBlock.Threads;
+
+            string formattedTime = $"Mining Time: {elapsedTime.ToString(@"m\:ss\.fff")}, Difficulty: {difficulty}, Threads: {threads}";
+
+            // Update the UI with blockchain information and mining time
+            UpdateText($"{blockchain.ToString()}\n{formattedTime}");
         }
+
 
 
         /* BLOCKCHAIN VALIDATION */
@@ -167,8 +177,97 @@ namespace BlockchainAssignment
             if (radioButton4.Checked)
             {
                 blockchain.CurrentMiningPreference = Blockchain.MiningPreference.AddressPreference;
+                blockchain.SortTransactionsByAddressPreference(publicKey.Text);
                 Debug.Print("RadioButton 4 Checked");
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            // Assuming textBox2 contains the difficulty value entered by the user
+            if (int.TryParse(textBox2.Text, out int newDifficulty))
+            {
+                // Set the difficulty using the setter
+                block.Difficulty=newDifficulty;
+            }
+        
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(textBox1.Text, out int newThreads))
+            {
+                // Set the difficulty using the setter
+                block.Threads = newThreads;
+            }
+        }
+
+        private void validationLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private async void button1_ClickAsync(object sender, EventArgs e)
+        {
+            Random random = new Random();
+            int numberOfTransactions = random.Next(5, 11);
+
+            for (int i = 0; i < numberOfTransactions; i++)
+            {
+                UpdateText("Generating randoms " +i+"/"+numberOfTransactions);
+                Wallet.Wallet senderWallet = new Wallet.Wallet(out string senderPrivKey);
+                Wallet.Wallet receiverWallet = new Wallet.Wallet(out string receiverPrivKey);
+
+                string senderAddress = senderWallet.publicID;
+                string receiverAddress = receiverWallet.publicID;
+                double amount = random.NextDouble() * 10;
+                double fee = random.NextDouble() * 2;
+
+                Transaction transaction = new Transaction(senderAddress, receiverAddress, amount, fee, senderPrivKey);
+                blockchain.transactionPool.Add(transaction);
+
+                // Generate a random delay between transactions (e.g., between 1 and 5 seconds)
+                int delayMilliseconds = random.Next(1000, 5001);
+                await Task.Delay(delayMilliseconds); // Introduce an asynchronous delay
+            }
+
+            UpdateText("Random transactions generated and added to the transaction pool.");
+        }
+
+        private void publicKeyLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void privateKeyLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void currentWalletLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void publicKey_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void privateKey_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,8 +17,31 @@ namespace BlockchainAssignment
 
         private DateTime timestamp; // Time of creation
 
-        private int index, // Position of the block in the sequence of blocks
-            difficulty = 5; // An arbitrary number of 0's to proceed a hash value
+        // Timer for measuring elapsed time
+        private static Stopwatch staticTimer;
+
+        public static TimeSpan StaticElapsedTime
+        {
+            get
+            {
+                return staticTimer?.Elapsed ?? TimeSpan.Zero;
+            }
+        }
+
+        public int Difficulty
+        {
+            get { return difficulty; }
+            set { difficulty = value; }
+        }
+
+        public int Threads
+        {
+            get { return threads; }
+            set { threads = value; }
+        }
+
+        private int index; // Position of the block in the sequence of blocks
+        private static int difficulty = 4, threads=24; // An arbitrary number of 0's to proceed a hash value
 
         public String prevHash, // A reference pointer to the previous block
             hash, // The current blocks "identity"
@@ -38,7 +62,7 @@ namespace BlockchainAssignment
             timestamp = DateTime.Now;
             index = 0;
             transactionList = new List<Transaction>();
-            hash = Mine(16);
+            hash = Mine(threads);
         }
 
         /* New Block constructor */
@@ -55,7 +79,7 @@ namespace BlockchainAssignment
             transactionList = new List<Transaction>(transactions); // Assign provided transactions to the block
 
             merkleRoot = MerkleRoot(transactionList); // Calculate the merkle root of the blocks transactions
-            hash = Mine(16); // Conduct PoW to create a hash which meets the given difficulty requirement
+            hash = Mine(threads); // Conduct PoW to create a hash which meets the given difficulty requirement
         }
 
         /* Hashes the entire Block object */
@@ -80,8 +104,11 @@ namespace BlockchainAssignment
         // Create a Hash which satisfies the difficulty level required for PoW
         public string Mine(int numberOfThreads)
         {
-            string re = new string('0', difficulty); // A string for analyzing the PoW requirement
+            string re = new string('0', Difficulty); // A string for analyzing the PoW requirement
             string result = null;
+
+            staticTimer = new Stopwatch(); // Initialize the class-level timer
+            staticTimer.Start();
 
             List<Thread> threads = new List<Thread>();
 
@@ -118,6 +145,7 @@ namespace BlockchainAssignment
                 thread.Join(); // Wait for each thread to finish
             }
 
+            staticTimer.Stop();
             return result; // Return the hash meeting the difficulty requirement
         }
 
