@@ -114,10 +114,10 @@ namespace BlockchainAssignment
 
             for (int i = 0; i < numberOfThreads; i++)
             {
-                int startingNonce = i; // Each thread starts with a different nonce
+                int enonce = i; // Each thread starts with a different nonce
                 Thread thread = new Thread(() =>
                 {
-                    int currentNonce = startingNonce;
+                    int currentNonce = enonce;
 
                     do
                     {
