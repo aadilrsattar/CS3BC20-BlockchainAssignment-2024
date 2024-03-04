@@ -177,7 +177,6 @@ namespace BlockchainAssignment
             if (radioButton4.Checked)
             {
                 blockchain.CurrentMiningPreference = Blockchain.MiningPreference.AddressPreference;
-                blockchain.SortTransactionsByAddressPreference(publicKey.Text);
                 Debug.Print("RadioButton 4 Checked");
             }
         }
@@ -257,7 +256,7 @@ namespace BlockchainAssignment
 
         private void publicKey_TextChanged(object sender, EventArgs e)
         {
-
+            blockchain.PublicKey = publicKey.Text;
         }
 
         private void privateKey_TextChanged(object sender, EventArgs e)

@@ -18,6 +18,8 @@ namespace BlockchainAssignment
 
         public List<Transaction> transactionPool = new List<Transaction>();
 
+        // Public property to store the public key
+        public string PublicKey { get; set; }
 
         // Mining preference property
         public MiningPreference CurrentMiningPreference { get; set; }
@@ -62,19 +64,42 @@ namespace BlockchainAssignment
             switch (CurrentMiningPreference)
             {
                 case MiningPreference.Greedy:
-                    return transactions.OrderByDescending(t => t.fee).ToList();
+                    // Choose transactions with higher fees, limited to six transactions
+                    return transactions.OrderByDescending(t => t.fee).Take(6).ToList();
+
                 case MiningPreference.Altruistic:
-                    return transactions.OrderBy(t => t.timestamp).ToList();
+                    // Choose the oldest transactions, limited to six transactions
+                    return transactions.OrderBy(t => t.timestamp).Take(6).ToList();
+
                 case MiningPreference.Random:
                     Random random = new Random();
-                    return transactions.OrderBy(t => random.Next()).ToList();
+                    // Run Rand() function with a small range and choose transactions with most matches
+                    return transactions.OrderBy(t => random.Next()).Take(6).ToList();
+
                 case MiningPreference.AddressPreference:
-                    // Example: Sort transactions based on recipient address
-                    return transactions.OrderBy(t => t.recipientAddress).ToList();
+                    // Choose transactions based on the recipient address (assuming recipientAddress holds the wallet ID), limited to six transactions
+                    var selectedTransactions = transactions.Where(t => t.recipientAddress == PublicKey).Take(6).ToList();
+
+                    // Fill remaining slots with random transactions if needed
+                    int remainingSlots = 6 - selectedTransactions.Count;
+                    if (remainingSlots > 0)
+                    {
+                        Random arandom = new Random();
+                        var randomTransactions = transactions
+                            .Where(t => t.recipientAddress != PublicKey)
+                            .OrderBy(t => arandom.Next())
+                            .Take(remainingSlots);
+
+                        selectedTransactions.AddRange(randomTransactions);
+                    }
+
+                    return selectedTransactions;
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+
 
         // Add a transaction to the transaction pool, sorting based on the mining preference
         public void AddTransaction(Transaction transaction)
